@@ -14,22 +14,10 @@ import Restaurant from './components/Restaurants'
 //RUNNING UP
 class App extends Component {
   state = {
-    restaurants: [],
     loggedInUser: null,
   };
 
   componentDidMount() {
-         axios
-           .get(`http://localhost:5005/api/restaurants`)
-           .then((response) => {
-             console.log("restaurants fetched");
-             this.setState({
-               restaurants: response.data,
-             });
-           })
-           .catch(() => {
-             console.log("error");
-           });
     if (!this.state.loggedInUser) {
       axios
         .get(`${config.API_URL}/api/user`, { withCredentials: true })
@@ -54,7 +42,7 @@ class App extends Component {
         {/* <NavBar user={loggedInUser}/> */}
         <Switch>
           <Route exact path="/" render={()=>{
-            return <Home user={loggedInUser} restaurants={restaurants}/>;
+            return <Home user={loggedInUser} />;
           }}/>
 
           <Route patch="/restaurant" />

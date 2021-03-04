@@ -1,14 +1,17 @@
-import React from "react";
-import { Switch, Route } from "react-router-dom";
+import React, { Component } from 'react';
+import { Switch, Route } from 'react-router-dom';
+import NavBar from './components/NavBar';
 
-function App() {
-  return (
-    <div className="App">
+ class App extends Component {
+  render() {
+    return <React.Fragment>
+      <NavBar />
       <Switch>
-        <Route exact path="/" component={HomePage} />
+        <Route patch='/'/>
+        <Route patch='/restaurant'/>
+        <Route patch='/profile'/>
       </Switch>
-    </div>
-  );
+    </React.Fragment>;
+  }
 }
-
-export default App;
+export default App

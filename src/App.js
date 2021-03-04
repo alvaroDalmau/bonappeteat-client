@@ -5,7 +5,9 @@ import axios from 'axios';
 import config from './config';
 
 //IMPRTED COMPONENTS
-// import NavBar from './components/NavBar';
+import NavBar from './components/NavBar';
+import UserProfile from './components/UserProfile';
+import Restaurant from './components/Restaurant';
 
 //RUNNING UP
 export default class App extends Component {
@@ -18,6 +20,7 @@ export default class App extends Component {
       axios
         .get(`${config.API_URL}/api/user`, { withCredentials: true })
         .then(response => {
+          console.log(response);
           this.setState({
             loggedInUser: response.data,
           });
@@ -35,11 +38,21 @@ export default class App extends Component {
     //running
     return (
       <React.Fragment>
-        {/* <NavBar user={loggedInUser}/> */}
+        <NavBar user={loggedInUser} />
         <Switch>
-          <Route patch="/" user={loggedInUser} />
-          <Route patch="/restaurant" />
-          <Route patch="/profile" user={loggedInUser} />
+          <Route exact path="/" user={loggedInUser} />
+          <Route
+            path="/restaurant/:id"
+            render={routeProps => {
+              <Restaurant {...routeProps} />;
+            }}
+          />
+          <Route
+            path="/profile"
+            render={() => {
+              return <UserProfile user={loggedInUser} />;
+            }}
+          />
         </Switch>
       </React.Fragment>
     );

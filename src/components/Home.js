@@ -8,8 +8,8 @@ class Home extends Component {
     const { user, restaurants } = this.props;
     return (
       <React.Fragment>
-        {!user ? (<Restaurants />) : (
-          <AboutUs  />
+        {!user ? (<AboutUs  />) : (<Restaurants />
+          
         )}
       </React.Fragment>
     );

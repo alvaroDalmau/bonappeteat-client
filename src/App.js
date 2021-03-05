@@ -7,7 +7,7 @@ import NavBar from './components/NavBar';
 import Home from './components/Home.js';
 import AboutUs from './components/AboutUs'
 import Restaurant from './components/Restaurants'
-
+import RestaurantDetails from './components/RestaurantDetails'
 //IMPRTED COMPONENTS
 // import NavBar from './components/NavBar';
 
@@ -21,32 +21,39 @@ class App extends Component {
     if (!this.state.loggedInUser) {
       axios
         .get(`${config.API_URL}/api/user`, { withCredentials: true })
-        .then(response => {
-          this.setState({
-            loggedInUser: response.data,
-          });
+        .then((response) => {
+          // this.setState({
+          loggedInUser: response.data;
+          // });
         })
         .catch(() => {
-          console.log('Error grabing data from user session');
+          console.log("Error grabing data from user session");
         });
     }
   }
 
   render() {
     //variable declaration
-    const { loggedInUser,restaurants } = this.state;
-
+    const { loggedInUser, restaurants } = this.state;
     //running
     return (
       <React.Fragment>
-        {/* <NavBar user={loggedInUser}/> */}
         <Switch>
-          <Route exact path="/" render={()=>{
-            return <Home user={loggedInUser} />;
-          }}/>
+          <Route
+            exact
+            path="/"
+            render={() => {
+              return <Home user={loggedInUser} />;
+            }}
+          />
 
-          <Route patch="/restaurant" />
-          <Route patch="/profile" user={loggedInUser} />
+          <Route
+            exact
+            path="/:restaurantId"
+            component={RestaurantDetails}
+            user={loggedInUser}
+          />
+          <Route path="/profile" user={loggedInUser} />
         </Switch>
       </React.Fragment>
     );

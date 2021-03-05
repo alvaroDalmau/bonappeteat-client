@@ -1,8 +1,8 @@
-import React, { Component } from "react";
-import axios from "axios";
-import { Link } from "react-router-dom";
-import config from "../config.js";
-import Search from "./Search.js";
+import React, { Component } from 'react';
+import axios from 'axios';
+import { Link } from 'react-router-dom';
+import config from '../config.js';
+import Search from './Search.js';
 
 class Restaurant extends Component {
   state = {
@@ -13,19 +13,19 @@ class Restaurant extends Component {
   componentDidMount() {
     axios
       .get(`${config.API_URL}/api/restaurants`)
-      .then((response) => {
-        console.log("data fetched");
+      .then(response => {
+        console.log('data fetched');
         this.setState({
           restaurants: response.data,
           filterRestaurant: response.data,
         });
       })
       .catch(() => {
-        console.log("error grabing restaurants");
+        console.log('Error grabing restaurants');
       });
   }
 
-  handleSearch = (event) => {
+  handleSearch = event => {
     let searchText = event.target.value.toLowerCase();
       console.log(this.state.filterRestaurant);
     let filteredArray = this.state.restaurants.filter((singleRestaurant) => {
@@ -65,7 +65,7 @@ class Restaurant extends Component {
   };
 
   render() {
-    // const { restaurants, filterRestaurant } = this.state;
+    const { restaurants, filterRestaurant } = this.state;
     return (
       <div>
         <h1>All the restaurants</h1>

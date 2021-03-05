@@ -9,7 +9,7 @@ import config from "../config";
      error: null
    };
 
-   handleSignUp = (event) => {
+   handleSign = (event) => {
      event.preventDefault();
      let user = {
        email: event.target.email.value,
@@ -35,29 +35,6 @@ import config from "../config";
        });
    };
 
-   handleSignIn = (event) => {
-     event.preventDefault();
-     let user = {
-       email: event.target.email.value,
-       password: event.target.password.value,
-     };
-     axios
-       .post(`${config.API_URL}/api/user/log`, user, { withCredentials: true })
-       .then((response) => {
-         this.setState(
-           {
-             loggedInUser: response.data,
-           },
-             () => {
-               this.props.history.push("/");
-             }
-         );
-       })
-       .catch(() => {
-         console.log("error");
-       });
-   };
-
    render() {
         const { user } = this.props;
      return (
@@ -72,7 +49,7 @@ import config from "../config";
            cupiditat non proident, sunt in culpa qui officia deserunt mollit
            anim id est laborum.
          </p>
-         {!user ? <LogForm onSignUp={this.handleSignUp}/> : <LogForm onSignIn={this.handleSignIn} />}
+         <LogForm onSign={this.handleSign}/> 
          
        </React.Fragment>
      );

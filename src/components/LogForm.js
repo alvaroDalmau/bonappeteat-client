@@ -7,8 +7,18 @@ export default class LogForm extends Component {
       <div>
         <form onSubmit={onSign}>
           <div>
-            <label htmlFor="InputEmail">Email address</label>
-            <input type="email" name="email" />
+          {/* DEPENDE */}
+            <form onSubmit={this.props.onSign}>
+              <div>
+                <label htmlFor="InputEmail">Email address</label>
+                <input type="email" name="email" />
+              </div>
+              <div>
+                <label htmlFor="InputPassword">Password</label>
+                <input name="password" type="password" />
+              </div>
+              <button type="submit">Submit</button>
+            </form>
           </div>
           <div>
             <label htmlFor="InputPassword">Password</label>

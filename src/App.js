@@ -6,11 +6,12 @@ import config from './config';
 
 //IMPRTED COMPONENTS
 import NavBar from './components/NavBar';
+import Home from './components/Home.js';
+import RestaurantDetails from './components/RestaurantDetails';
 import UserProfile from './components/UserProfile';
-import Restaurant from './components/Restaurant';
 
 //RUNNING UP
-export default class App extends Component {
+class App extends Component {
   state = {
     loggedInUser: null,
   };
@@ -33,18 +34,23 @@ export default class App extends Component {
 
   render() {
     //variable declaration
-    const { loggedInUser } = this.state;
-
+    const { loggedInUser, restaurants } = this.state;
     //running
     return (
       <React.Fragment>
         <NavBar user={loggedInUser} />
         <Switch>
-          <Route exact path="/" user={loggedInUser} />
           <Route
-            path="/restaurant/:id"
+            exact
+            path="/"
+            render={() => {
+              return <Home user={loggedInUser} />;
+            }}
+          />
+          <Route
+            path="/restaurant/:restaurantId"
             render={routeProps => {
-              <Restaurant {...routeProps} />;
+              <RestaurantDetails {...routeProps} />;
             }}
           />
           <Route
@@ -58,3 +64,4 @@ export default class App extends Component {
     );
   }
 }
+export default App;

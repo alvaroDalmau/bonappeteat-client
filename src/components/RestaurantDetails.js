@@ -12,7 +12,7 @@ export default class RestaurantDetails extends Component {
       let restaurantId = this.props.match.params.restaurantId;
       // console.log(restaurantId)
     axios
-      .get(`${config.API_URL}/api/${restaurantId}`)
+      .get(`${config.API_URL}/api/restaurant/${restaurantId}`)
       .then((response) => {
         console.log("data fetched");
         this.setState({

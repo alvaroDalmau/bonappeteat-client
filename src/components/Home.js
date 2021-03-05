@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import AboutUs from './AboutUs.js'
 import Restaurants from './Restaurants'
-import { Switch, Route } from "react-router-dom";
 
 class Home extends Component {
 

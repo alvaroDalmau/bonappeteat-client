@@ -5,8 +5,6 @@ import axios from 'axios';
 import config from './config';
 import NavBar from './components/NavBar';
 import Home from './components/Home.js';
-import AboutUs from './components/AboutUs'
-import Restaurant from './components/Restaurants'
 import RestaurantDetails from './components/RestaurantDetails'
 //IMPRTED COMPONENTS
 // import NavBar from './components/NavBar';
@@ -49,7 +47,7 @@ class App extends Component {
 
           <Route
             exact
-            path="/:restaurantId"
+            path="/restaurant/:restaurantId"
             component={RestaurantDetails}
             user={loggedInUser}
           />

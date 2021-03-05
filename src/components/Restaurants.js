@@ -65,7 +65,7 @@ class Restaurant extends Component {
   };
 
   render() {
-    const { restaurants, filterRestaurant } = this.state;
+    // const { restaurants, filterRestaurant } = this.state;
     return (
       <div>
         <h1>All the restaurants</h1>

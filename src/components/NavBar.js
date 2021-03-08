@@ -1,7 +1,32 @@
 import React, { Component } from 'react';
 import logo from '../logo-bonAppeteat.png';
+import { withRouter } from "react-router-dom";
+import axios from "axios";
+import config from "../config.js";
 
-export default class NavBar extends Component {
+class NavBar extends Component {
+  state = {
+    loggedInUser: null,
+  };
+  
+  handleLogout = (event) => {
+    axios
+      .post(`${config.API_URL}/api/logout`, {}, { withCredentials: true })
+      .then((response) => {
+        this.setState(
+          {
+            loggedInUser: null,
+          },
+          () => {
+            this.props.history.push("/");
+          }
+        );
+      })
+      .catch(() => {
+        console.log("error");
+      });
+  };
+
   render() {
     const { user } = this.props;
     return (
@@ -19,10 +44,12 @@ export default class NavBar extends Component {
           </nav>
         ) : (
           <nav>
-            <a href="/user">Profile</a> <a href="/">Log OUT</a>
+            <a href={`/profile/${user._id}`}>Profile</a>
+            <button onClick={this.handleLogout}>Log OUT</button>
           </nav>
         )}
       </React.Fragment>
     );
   }
 }
+export default withRouter(NavBar)

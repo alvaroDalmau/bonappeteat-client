@@ -27,21 +27,21 @@ class Restaurant extends Component {
 
   handleSearch = event => {
     let searchText = event.target.value.toLowerCase();
-    console.log(this.state.filterRestaurant);
+    // console.log(this.state.filterRestaurant);
     let filteredArray = this.state.restaurants.filter(singleRestaurant => {
       return singleRestaurant.name.toLowerCase().includes(searchText);
     });
 
-    let y = [];
-    this.state.filterRestaurant.forEach(e => {
-      filteredArray.forEach(j => {
-        if (e.name == j.name) {
-          y.push(j);
-        }
-      });
-    });
+    // let y = [];
+    // this.state.filterRestaurant.forEach(e => {
+    //   filteredArray.forEach(j => {
+    //     if (e.name == j.name) {
+    //       y.push(j);
+    //     }
+    //   });
+    // });
 
-    console.log(y);
+    // console.log(y);
     this.setState({
       filterRestaurant: filteredArray,
     });
@@ -54,7 +54,8 @@ class Restaurant extends Component {
       this.setState({
         filterRestaurant: this.state.restaurants,
       });
-    } else {
+    } 
+    else {
       let filteredArray = this.state.restaurants.filter(singleRestaurant => {
         return singleRestaurant.category.includes(filterKey);
       });

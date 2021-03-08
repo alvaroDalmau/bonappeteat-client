@@ -6,7 +6,7 @@ class Home extends Component {
   render() {
     const { user } = this.props;
     return (
-      <React.Fragment>{!user ? <Restaurants />: <AboutUs /> }</React.Fragment>
+      <React.Fragment>{!user ? <AboutUs /> : <Restaurants /> }</React.Fragment>
     );
   }
 }

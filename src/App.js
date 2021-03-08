@@ -9,6 +9,8 @@ import NavBar from "./components/NavBar";
 import Home from "./components/Home.js";
 import RestaurantDetails from "./components/RestaurantDetails";
 import UserProfile from "./components/UserProfile";
+import FormBooking from './components/FormBooking'
+import InfoUser from "./components/FormPhotoUser";
 
 //RUNNING UP
 class App extends Component {
@@ -50,15 +52,16 @@ class App extends Component {
           <Route
             path="/restaurant/:restaurantId"
             render={(routeProps) => {
-              <RestaurantDetails {...routeProps} />;
+              return <RestaurantDetails {...routeProps} />;
             }}
           />
           <Route
-            path="/profile"
-            render={() => {
-              return <UserProfile user={loggedInUser} />;
+            path="/profile/:userId"
+            render={(routeProps) => {
+              return <UserProfile user={loggedInUser} {...routeProps}/>;
             }}
           />
+          <Route path="/bookings" component={FormBooking} />
         </Switch>
       </React.Fragment>
     );

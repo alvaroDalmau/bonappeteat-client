@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import config from '../config.js';
+import { Link } from "react-router-dom";
 
 export default class RestaurantDetails extends Component {
   state = {
@@ -28,9 +29,13 @@ export default class RestaurantDetails extends Component {
       <React.Fragment>
         <h1>{restaurant.name}</h1>
         <div>{restaurant.description}</div>
-        {restaurant.images.map(e => {
+        {/* {restaurant.images.map((e) => {
           <img src={e} alt="restaurant image" />;
-        })}
+        })} */}
+        <img src={restaurant.images} alt="restaurant image" />
+        <Link key={restaurant._id} to={`/bookings`}><button>
+         Make your Booking
+        </button></Link>
       </React.Fragment>
     );
   }

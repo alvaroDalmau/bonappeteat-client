@@ -9,28 +9,29 @@ class AboutUs extends Component {
     loggedInUser: null,
   };
 
-  // handleSign = event => {
-  //   event.preventDefault();
-  //   let user = {
-  //     email: event.target.email.value,
-  //     password: event.target.password.value,
-  //   };
-  //   axios
-  //     .post(`${config.API_URL}/api/user/log`, user, { withCredentials: true })
-  //     .then(response => {
-  //       this.setState(
-  //         {
-  //           loggedInUser: response.data,
-  //         },
-  //         () => {
-  //           this.props.history.push('/profile');
-  //         }
-  //       );
-  //     })
-  //     .catch(err => {
-  //       console.log('Error signing');
-  //     });
-  // };
+  handleSign = event => {
+    event.preventDefault();
+    let user = {
+      email: event.target.email.value,
+      password: event.target.password.value,
+    };
+    axios
+      .post(`${config.API_URL}/api/user/log`, user, { withCredentials: true })
+      .then(response => {
+        this.setState(
+          {
+            loggedInUser: response.data,
+          },
+          () => {
+            
+            this.props.history.push(`/profile/${this.state.loggedInUser._id}`);
+          }
+        );
+      })
+      .catch(err => {
+        console.log('Error signing');
+      });
+  };
 
   render() {
     const { user } = this.props;

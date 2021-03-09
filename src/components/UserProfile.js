@@ -4,10 +4,15 @@ import ActiveBooks from './ActiveBooks';
 
 export default class UserProfile extends Component {
   render() {
-    const { user } = this.props;
+    const { loggedInUser, changeUser, deleteUser } = this.props;
     return (
       <React.Fragment>
-        <InfoUser user={user} />
+        <InfoUser
+          loggedInUser={loggedInUser}
+          changeUser={changeUser}
+          deleteUser={deleteUser}
+          {...this.props}
+        />
         <ActiveBooks />
       </React.Fragment>
     );

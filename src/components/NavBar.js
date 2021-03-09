@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 import logo from '../logo-bonAppeteat.png';
 
 export default class NavBar extends Component {
   render() {
-    const { user } = this.props;
+    const { loggedInUser, onLogOut } = this.props;
     return (
       <React.Fragment>
         {/* Logo and name */}
@@ -13,13 +14,16 @@ export default class NavBar extends Component {
         </a>
 
         {/* nav --- depends if user is logged or not */}
-        {!user ? (
+        {!loggedInUser ? (
           <nav>
             <a href="#form">Account</a>
           </nav>
         ) : (
           <nav>
-            <a href="/user">Profile</a> <a href="/">Log OUT</a>
+            <Link to="/profile">Profile</Link>{' '}
+            <Link to="/" onClick={onLogOut}>
+              Log OUT
+            </Link>
           </nav>
         )}
       </React.Fragment>

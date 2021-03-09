@@ -1,6 +1,6 @@
 //IMPORTED LIBRARIES
 import React, { Component } from 'react';
-import { Switch, Route } from 'react-router-dom';
+import { Switch, Route, withRouter } from 'react-router-dom';
 import axios from 'axios';
 import config from './config';
 
@@ -16,12 +16,12 @@ class App extends Component {
     loggedInUser: null,
   };
 
+  //set state depends of session
   componentDidMount() {
     if (!this.state.loggedInUser) {
       axios
         .get(`${config.API_URL}/api/user`, { withCredentials: true })
         .then(response => {
-          console.log(response);
           this.setState({
             loggedInUser: response.data,
           });
@@ -32,19 +32,96 @@ class App extends Component {
     }
   }
 
+  //create user
+  handleSign = event => {
+    event.preventDefault();
+    let user = {
+      email: event.target.email.value,
+      password: event.target.password.value,
+    };
+    axios
+      .post(`${config.API_URL}/api/user/log`, user, { withCredentials: true })
+      .then(response => {
+        this.setState(
+          {
+            loggedInUser: response.data,
+          },
+          () => {
+            this.props.history.push('/');
+          }
+        );
+      })
+      .catch(err => {
+        console.log('Error signing');
+      });
+  };
+
+  //logOUT and delete session
+  handleLogOut = () => {
+    axios
+      .post(`${config.API_URL}/api/logout`, {}, { withCredentials: true })
+      .then(response => {
+        this.setState({
+          loggedInUser: null,
+        });
+      })
+      .catch(err => {
+        console.log('Failing loging out');
+      });
+  };
+
+  //change user details
+  handleChange = event => {
+    event.preventDefault();
+    let user = {
+      email: event.target.email.value,
+      password: event.target.password.value,
+    };
+    console.log(user);
+    axios
+      .patch(`${config.API_URL}/api/user`, user, { withCredentials: true })
+      .then(response => {
+        this.setState(
+          {
+            loggedInUser: response.data,
+          },
+          () => {
+            this.props.history.push('/profile');
+          }
+        );
+      })
+      .catch(err => {
+        console.log('Error changing profile details');
+      });
+  };
+
+  // Delete User
+  handleDelete = () => {
+    axios
+      .delete(`${config.API_URL}/api/user`, { withCredentials: true })
+      .then(() => {
+        this.setState({ loggedInUser: null }, () => {
+          this.props.history.push('/');
+        });
+      })
+      .catch(() => {
+        console.log('Failed deleting user profile');
+      });
+  };
+
   render() {
     //variable declaration
-    const { loggedInUser, restaurants } = this.state;
+    const { loggedInUser } = this.state;
     //running
     return (
       <React.Fragment>
-        <NavBar user={loggedInUser} />
+        <NavBar loggedInUser={loggedInUser} onLogOut={this.handleLogOut} />
         <Switch>
           <Route
             exact
             path="/"
             render={() => {
-              return <Home user={loggedInUser} />;
+              return <Home onSign={this.handleSign} user={loggedInUser} />;
             }}
           />
           <Route
@@ -55,8 +132,15 @@ class App extends Component {
           />
           <Route
             path="/profile"
-            render={() => {
-              return <UserProfile user={loggedInUser} />;
+            render={routeProps => {
+              return (
+                <UserProfile
+                  loggedInUser={loggedInUser}
+                  changeUser={this.handleChange}
+                  deleteUser={this.handleDelete}
+                  {...routeProps}
+                />
+              );
             }}
           />
         </Switch>
@@ -64,4 +148,4 @@ class App extends Component {
     );
   }
 }
-export default App;
+export default withRouter(App);

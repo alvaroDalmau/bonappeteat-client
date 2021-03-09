@@ -76,8 +76,8 @@ class Restaurant extends Component {
           <option key={restaurants._id} value="all">
             All
           </option>
-          {restaurants.map(restaurants => (
-            <option key={restaurants._id} value={restaurants.category}>
+          {restaurants.map((restaurants, index) => (
+            <option key={index} value={restaurants.category}>
               {restaurants.category}
             </option>
           ))}
@@ -90,7 +90,7 @@ class Restaurant extends Component {
             <div>
               <div> {restaurants.category}</div>
               <img src={restaurants.images[0]}></img>
-              <Link key={restaurants._id} to={`/restaurant/${restaurants._id}`}>
+              <Link key={index} to={`/restaurant/${restaurants._id}`}>
                 {restaurants.name}
               </Link>
               <div> {restaurants.location}</div>

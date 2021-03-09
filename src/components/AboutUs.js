@@ -1,39 +1,9 @@
 import React, { Component } from 'react';
-import {withRouter} from 'react-router-dom'
 import LogForm from './LogForm';
-import axios from 'axios';
-import config from '../config';
 
-class AboutUs extends Component {
-  state = {
-    loggedInUser: null,
-  };
-
-  handleSign = event => {
-    event.preventDefault();
-    let user = {
-      email: event.target.email.value,
-      password: event.target.password.value,
-    };
-    axios
-      .post(`${config.API_URL}/api/user/log`, user, { withCredentials: true })
-      .then(response => {
-        this.setState(
-          {
-            loggedInUser: response.data,
-          },
-          () => {
-            this.props.history.push('/profile');
-          }
-        );
-      })
-      .catch(err => {
-        console.log('Error signing');
-      });
-  };
-
+export default class AboutUs extends Component {
   render() {
-    const { user } = this.props;
+    const { onSign } = this.props;
     return (
       <React.Fragment>
         <h1>Bon Appeteat</h1>
@@ -46,9 +16,8 @@ class AboutUs extends Component {
           cupiditat non proident, sunt in culpa qui officia deserunt mollit anim
           id est laborum.
         </p>
-        <LogForm onSign={this.handleSign} />
+        <LogForm onSign={onSign} />
       </React.Fragment>
     );
   }
 }
-export default withRouter(AboutUs);

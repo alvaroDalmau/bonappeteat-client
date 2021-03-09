@@ -9,11 +9,13 @@ import NavBar from './components/NavBar';
 import Home from './components/Home.js';
 import RestaurantDetails from './components/RestaurantDetails';
 import UserProfile from './components/UserProfile';
+import FormBooking from './components/FormBooking';
 
 //RUNNING UP
 class App extends Component {
   state = {
     loggedInUser: null,
+    fetching: true,
   };
 
   //set state depends of session
@@ -24,10 +26,14 @@ class App extends Component {
         .then(response => {
           this.setState({
             loggedInUser: response.data,
+            fetching: false,
           });
         })
         .catch(() => {
           console.log('Error grabing data from user session');
+          this.setState({
+            fetching: false,
+          });
         });
     }
   }
@@ -95,6 +101,13 @@ class App extends Component {
       });
   };
 
+  //change img user
+  handleImgProfile = updatedUser => {
+    this.setState({
+      loggedInUser: updatedUser,
+    });
+  };
+
   // Delete User
   handleDelete = () => {
     axios
@@ -111,7 +124,10 @@ class App extends Component {
 
   render() {
     //variable declaration
-    const { loggedInUser } = this.state;
+    const { loggedInUser, fetching } = this.state;
+    if (fetching) {
+      return <p>Loading</p>;
+    }
     //running
     return (
       <React.Fragment>
@@ -135,6 +151,7 @@ class App extends Component {
             render={routeProps => {
               return (
                 <UserProfile
+                  changeImg={this.handleImgProfile}
                   loggedInUser={loggedInUser}
                   changeUser={this.handleChange}
                   deleteUser={this.handleDelete}
@@ -142,6 +159,11 @@ class App extends Component {
                 />
               );
             }}
+          />
+          <Route
+            path="/:restauranId/create"
+            user={loggedInUser}
+            component={FormBooking}
           />
         </Switch>
       </React.Fragment>

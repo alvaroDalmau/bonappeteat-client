@@ -4,25 +4,9 @@ import React, { Component } from 'react';
 
 export default class InfoUser extends Component {
   state = {
-    loggedInUser: {},
+    loggedInUser: this.props.loggedInUser,
     password: '',
   };
-
-  componentDidMount() {
-    if (this.state.loggedInUser != this.props.loggedInUser) {
-      axios
-        .get(`${config.API_URL}/api/user`, { withCredentials: true })
-        .then(response => {
-          this.setState({
-            loggedInUser: response.data,
-            password: '',
-          });
-        })
-        .catch(() => {
-          console.log('Error grabing data from user session');
-        });
-    }
-  }
 
   handlePasswordChange = event => {
     event.preventDefault();
@@ -32,7 +16,7 @@ export default class InfoUser extends Component {
     });
   };
 
-  handleImgProfile = event => {
+  handleImageChange = event => {
     event.preventDefault();
     let image = event.target.image.files[0];
     console.log(image);
@@ -44,7 +28,9 @@ export default class InfoUser extends Component {
         withCredentials: true,
       })
       .then(response => {
-        this.setState({ loggedInUser: response.data });
+        this.setState({ loggedInUser: response.data }, () => {
+          this.props.changeImg(response.data);
+        });
       })
       .catch(err => {
         console.log('Failing uploading img profile');
@@ -56,9 +42,10 @@ export default class InfoUser extends Component {
     const { loggedInUser } = this.state;
     return (
       <React.Fragment>
+        <img src={loggedInUser.image} />
         <button>Edit your profile details</button>
 
-        <form onSubmit={this.handleImgProfile} encType="multipart/form-data">
+        <form onSubmit={this.handleImageChange} encType="multipart/form-data">
           <input type="file" name="image" accept="image/png, image/jpg" />
           <button>Submit</button>
         </form>

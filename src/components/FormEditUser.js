@@ -4,7 +4,7 @@ import FormPhotoUser from './FormPhotoUser'
 
 export default class FormEditUser extends Component {
   render() {
-    const { user, userInfo } = this.props;
+    const { user, userInfo, onEdit} = this.props;
     return (
       <React.Fragment>
         <h1>Edit your profile details</h1>
@@ -14,20 +14,20 @@ export default class FormEditUser extends Component {
           <label>Email:</label>
           <input
             type="email"
-            placeholder="email"
             value={userInfo.email}
+            onChange={this.props.onEditEmail}
           ></input>
           <label>Password:</label>
           <input
             type="password"
-            placeholder="****"
             value={userInfo.password}
+            onChange={this.props.onEditPassword}
           ></input>
           <br />
           <button
-          // onClick={() => {
-          //   onEdit(userInfo);
-          // }}
+            onClick={() => {
+              onEdit(userInfo);
+            }}
           >
             Apply changes
           </button>

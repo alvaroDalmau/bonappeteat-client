@@ -25,28 +25,6 @@ class Restaurant extends Component {
       });
   }
 
-  handleSearch = event => {
-    let searchText = event.target.value.toLowerCase();
-    // console.log(this.state.filterRestaurant);
-    let filteredArray = this.state.restaurants.filter(singleRestaurant => {
-      return singleRestaurant.name.toLowerCase().includes(searchText);
-    });
-
-    // let y = [];
-    // this.state.filterRestaurant.forEach(e => {
-    //   filteredArray.forEach(j => {
-    //     if (e.name == j.name) {
-    //       y.push(j);
-    //     }
-    //   });
-    // });
-
-    // console.log(y);
-    this.setState({
-      filterRestaurant: filteredArray,
-    });
-  };
-
   handleFilter = event => {
     let filterKey = event.target.value;
 
@@ -55,7 +33,7 @@ class Restaurant extends Component {
         filterRestaurant: this.state.restaurants,
       });
     } 
-    else {
+    {
       let filteredArray = this.state.restaurants.filter(singleRestaurant => {
         return singleRestaurant.category.includes(filterKey);
       });
@@ -65,6 +43,20 @@ class Restaurant extends Component {
       });
     }
   };
+
+  handleSearch = event => {
+    let searchText = event.target.value.toLowerCase();
+    // console.log(this.state.filterRestaurant);
+    let filteredArray = this.state.restaurants.filter(singleRestaurant => {
+      return singleRestaurant.name.toLowerCase().includes(searchText);
+    });
+
+    this.setState({
+      filterRestaurant: filteredArray,
+    });
+  };
+
+
 
   render() {
     const { restaurants, filterRestaurant } = this.state;
@@ -77,7 +69,7 @@ class Restaurant extends Component {
           <option key={restaurants._id} value="all">
             All
           </option>
-          {restaurants.map(restaurants => (
+          {filterRestaurant.map(restaurants => (
             <option key={restaurants._id} value={restaurants.category}>
               {restaurants.category}
             </option>
@@ -88,7 +80,7 @@ class Restaurant extends Component {
         <Search change={this.handleSearch} />
         {filterRestaurant.map((restaurants, index) => {
           return (
-            <div>
+            <div key={index}>
               <div> {restaurants.category}</div>
               <img src={restaurants.images[0]}></img>
               <Link key={restaurants._id} to={`/restaurant/${restaurants._id}`}>

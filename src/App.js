@@ -10,7 +10,6 @@ import Home from "./components/Home.js";
 import RestaurantDetails from "./components/RestaurantDetails";
 import UserProfile from "./components/UserProfile";
 import FormBooking from './components/FormBooking'
-import InfoUser from "./components/FormPhotoUser";
 
 //RUNNING UP
 class App extends Component {
@@ -23,7 +22,6 @@ class App extends Component {
       axios
         .get(`${config.API_URL}/api/user`, { withCredentials: true })
         .then((response) => {
-          console.log(response);
           this.setState({
             loggedInUser: response.data,
           });
@@ -36,7 +34,7 @@ class App extends Component {
 
   render() {
     //variable declaration
-    const { loggedInUser, restaurants } = this.state;
+    const { loggedInUser} = this.state;
     //running
     return (
       <React.Fragment>
@@ -52,7 +50,7 @@ class App extends Component {
           <Route
             path="/restaurant/:restaurantId"
             render={(routeProps) => {
-              return <RestaurantDetails {...routeProps} />;
+              return <RestaurantDetails user={loggedInUser} {...routeProps} />;
             }}
           />
           <Route
@@ -61,7 +59,7 @@ class App extends Component {
               return <UserProfile user={loggedInUser} {...routeProps}/>;
             }}
           />
-          <Route path="/bookings" component={FormBooking} />
+          <Route path="/:restauranId/create" user={loggedInUser} component={FormBooking} />
         </Switch>
       </React.Fragment>
     );

@@ -8,7 +8,7 @@ export default class InfoUser extends Component {
   render() {
     return (
       <React.Fragment>
-        <form method="POST" action="/upload" enctype="multipart/form-data">
+        <form method="POST" action="/upload" encType="multipart/form-data">
           <input
             type="file"
             name="imageUrl"

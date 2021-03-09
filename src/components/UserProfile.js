@@ -29,10 +29,66 @@ export default class UserProfile extends Component {
     this.setState({ showForm: true });
   };
 
-  handleEditForm=()=>{
+  handleEditEmail = (event) => {
+    let text = event.target.value;
 
-  }
+    let clonedUser = JSON.parse(JSON.stringify(this.state.userInfo));
+    clonedUser.email = text;
+
+    this.setState({
+      userInfo: clonedUser,
+    });
+  };
+
+  handleEditPassword = (event) => {
+    let text = event.target.value;
+
+    let clonedUser = JSON.parse(JSON.stringify(this.state.userInfo));
+    clonedUser.password = text;
+
+    this.setState({
+      userInfo: clonedUser,
+    });
+  };  
   
+  handleEditForm = (event) => {
+    let uploadForm = new FormData();
+    uploadForm.append("imageUrl", image);
+    
+    axios.post(`${config.API_URL}/api/upload`, uploadForm)
+      .then((response)=>{
+        axios
+          .patch(`${config.API_URL}/api/user/${this.state.userInfo._id}`, {
+            // email: this.state.userInfo.email,
+            // password: this.state.userInfo.password,
+            // image: response.data.image,
+            email: event.target.value.email,
+            password: event.target.value.password,
+            image: response.data.image,
+          })
+
+          .then((response) => {
+            // let newUser = {
+            //   email: ,
+            //   password: ,
+            //   image: ,
+            // };
+
+            this.setState(
+              {
+                userInfo: [response.data, ...this.state.userInfo],
+              },
+              () => {
+                this.props.history.push(`/profile/${this.state.userInfo._id}`);
+              }
+            );
+          })
+          .catch(() => {
+            console.log("error editing profile info");
+          });
+  })
+  }
+
   render() {
     const { user } = this.props;
     const { showForm, userInfo } = this.state;
@@ -42,7 +98,9 @@ export default class UserProfile extends Component {
 
         {showForm ? (
           <FormEditUser
-            onEdit={this.handleEditChange}
+            onEditEmail={this.handleEditEmail}
+            onEditPassword={this.handleEditPassword}
+            onEdit={this.handleEditForm}
             userInfo={userInfo}
           />
         ) : (
@@ -62,11 +120,12 @@ export default class UserProfile extends Component {
               <button onClick={this.handleShowForm}>
                 Edit your profile info
               </button>
-              <button >Delete Account</button>
+              <br />
+              <button>Delete Account</button>
             </form>
           </div>
         )}
-        <ActiveBooks />
+        <ActiveBooks user={userInfo}/>
       </React.Fragment>
     );
   }

@@ -15,7 +15,6 @@ import Error from './components/Error';
 class App extends Component {
   state = {
     loggedInUser: null,
-    bookings: [],
     fetching: true,
   };
 
@@ -25,19 +24,10 @@ class App extends Component {
       axios
         .get(`${config.API_URL}/api/user`, { withCredentials: true })
         .then(response => {
-          //grabbing bookings info of each user
-          axios
-            .get(`${config.API_URL}/api/bookings`, { withCredentials: true })
-            .then(bookings => {
-              this.setState({
-                loggedInUser: response.data,
-                bookings: bookings.data,
-                fetching: false,
-              });
-            })
-            .catch(err => {
-              console.log(err);
-            });
+          this.setState({
+            loggedInUser: response.data,
+            fetching: false,
+          });
         })
         .catch(() => {
           console.log('Error grabing data from user session');

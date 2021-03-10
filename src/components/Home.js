@@ -2,12 +2,13 @@ import React, { Component } from 'react';
 import AboutUs from './AboutUs.js';
 import Restaurants from './Restaurants';
 
-class Home extends Component {
+export default class Home extends Component {
   render() {
-    const { user } = this.props;
+    const { user, onSign } = this.props;
     return (
-      <React.Fragment>{!user ? <AboutUs /> : <Restaurants /> }</React.Fragment>
+      <React.Fragment>
+        {!user ? <AboutUs onSign={onSign} /> : <Restaurants />}
+      </React.Fragment>
     );
   }
 }
-export default Home;

@@ -1,34 +1,10 @@
-import React, { Component } from 'react';
-import logo from '../logo-bonAppeteat.png';
-import { withRouter } from "react-router-dom";
-import axios from "axios";
-import config from "../config.js";
+import React, { Component } from "react";
+import { Link } from "react-router-dom";
+import logo from "../logo-bonAppeteat.png";
 
-class NavBar extends Component {
-  state = {
-    loggedInUser: null,
-  };
-  
-  handleLogout = (event) => {
-    axios
-      .post(`${config.API_URL}/api/logout`, {}, { withCredentials: true })
-      .then((response) => {
-        this.setState(
-          {
-            loggedInUser: null,
-          },
-          () => {
-            this.props.history.push("/");
-          }
-        );
-      })
-      .catch(() => {
-        console.log("error");
-      });
-  };
-
+export default class NavBar extends Component {
   render() {
-    const { user } = this.props;
+    const { loggedInUser, onLogOut } = this.props;
     return (
       <React.Fragment>
         {/* Logo and name */}
@@ -38,18 +14,19 @@ class NavBar extends Component {
         </a>
 
         {/* nav --- depends if user is logged or not */}
-        {!user ? (
+        {!loggedInUser ? (
           <nav>
             <a href="#form">Account</a>
           </nav>
         ) : (
           <nav>
-            <a href={`/profile/${user._id}`}>Profile</a>
-            <button onClick={this.handleLogout}>Log OUT</button>
+            <Link to="/profile">Profile</Link>{" "}
+            <Link to="/" onClick={onLogOut}>
+              Log OUT
+            </Link>
           </nav>
         )}
       </React.Fragment>
     );
   }
 }
-export default withRouter(NavBar)

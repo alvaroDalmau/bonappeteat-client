@@ -9,6 +9,7 @@ import NavBar from './components/NavBar';
 import Home from './components/Home.js';
 import RestaurantDetails from './components/RestaurantDetails';
 import UserProfile from './components/UserProfile';
+import Error from './components/Error';
 
 //RUNNING UP
 class App extends Component {
@@ -170,6 +171,7 @@ class App extends Component {
               return <RestaurantDetails user={loggedInUser} {...routeProps} />;
             }}
           />
+          <Route component={Error} />
         </Switch>
       </React.Fragment>
     );

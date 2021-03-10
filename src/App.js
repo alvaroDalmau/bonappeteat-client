@@ -147,7 +147,9 @@ class App extends Component {
             exact
             path="/"
             render={() => {
-              return <Home onSign={this.handleSign} user={loggedInUser} />;
+              return (
+                <Home onSign={this.handleSign} loggedInUser={loggedInUser} />
+              );
             }}
           />
           <Route
@@ -168,7 +170,12 @@ class App extends Component {
           <Route
             path="/restaurant/:restaurantId"
             render={routeProps => {
-              return <RestaurantDetails user={loggedInUser} {...routeProps} />;
+              return (
+                <RestaurantDetails
+                  loggedInUser={loggedInUser}
+                  {...routeProps}
+                />
+              );
             }}
           />
           <Route component={Error} />

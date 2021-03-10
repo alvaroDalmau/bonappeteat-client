@@ -4,10 +4,10 @@ import Restaurants from './Restaurants';
 
 export default class Home extends Component {
   render() {
-    const { user, onSign } = this.props;
+    const { loggedInUser, onSign } = this.props;
     return (
       <React.Fragment>
-        {!user ? <AboutUs onSign={onSign} /> : <Restaurants />}
+        {!loggedInUser ? <AboutUs onSign={onSign} /> : <Restaurants />}
       </React.Fragment>
     );
   }

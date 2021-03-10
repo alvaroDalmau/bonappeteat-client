@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import config from '../config.js';
-import { withRouter } from 'react-router-dom';
+import { withRouter, Redirect } from 'react-router-dom';
 
 class RestaurantDetails extends Component {
   state = {
@@ -52,6 +52,10 @@ class RestaurantDetails extends Component {
 
   render() {
     const { restaurant } = this.state;
+    const { loggedInUser } = this.props;
+    if (!loggedInUser) {
+      return <Redirect to={'/'} />;
+    }
     return (
       <React.Fragment>
         <h1>{restaurant.name}</h1>

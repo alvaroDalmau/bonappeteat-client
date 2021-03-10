@@ -5,6 +5,7 @@ import config from '../config';
 export default class ActiveBooks extends Component {
   state = {
     bookings: [],
+    fetching: true,
   };
 
   componentDidMount() {
@@ -14,6 +15,7 @@ export default class ActiveBooks extends Component {
       .then(bookings => {
         this.setState({
           bookings: bookings.data,
+          fetching: false,
         });
       })
       .catch(err => {
@@ -27,6 +29,13 @@ export default class ActiveBooks extends Component {
 
   render() {
     const { bookings } = this.state;
+    if (fetching) {
+      return (
+        <div className="spinner-grow text-info" role="status">
+          <span className="sr-only">Loading...</span>
+        </div>
+      );
+    }
     return (
       <React.Fragment>
         {bookings.map((e, i) => {

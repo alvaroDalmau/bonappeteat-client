@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import { Switch, Route, withRouter } from 'react-router-dom';
 import axios from 'axios';
 import config from './config';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 //IMPORTING COMPONENTS
 import NavBar from './components/NavBar';
@@ -126,7 +127,11 @@ class App extends Component {
     //variable declaration
     const { loggedInUser, bookings, fetching } = this.state;
     if (fetching) {
-      return <p>Loading</p>;
+      return (
+        <div className="spinner-grow text-info" role="status">
+          <span className="sr-only">Loading...</span>
+        </div>
+      );
     }
     //running
     return (

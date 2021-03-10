@@ -8,6 +8,7 @@ class Restaurant extends Component {
   state = {
     restaurants: [],
     filterRestaurant: [],
+    fetching: true,
   };
 
   componentDidMount() {
@@ -18,6 +19,7 @@ class Restaurant extends Component {
         this.setState({
           restaurants: response.data,
           filterRestaurant: response.data,
+          fetching: false,
         });
       })
       .catch(() => {
@@ -67,6 +69,13 @@ class Restaurant extends Component {
 
   render() {
     const { restaurants, filterRestaurant } = this.state;
+    if (fetching) {
+      return (
+        <div className="spinner-grow text-info" role="status">
+          <span className="sr-only">Loading...</span>
+        </div>
+      );
+    }
     return (
       <div>
         <h1>All the restaurants</h1>

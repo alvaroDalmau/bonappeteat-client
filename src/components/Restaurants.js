@@ -85,15 +85,15 @@ class Restaurant extends Component {
 
         {/* SEARCH BAR */}
         <Search change={this.handleSearch} />
-        {filterRestaurant.map((restaurants, index) => {
+        {filterRestaurant.map((restaurant, index) => {
           return (
             <div>
-              <div> {restaurants.category}</div>
-              <img src={restaurants.images[0]}></img>
-              <Link key={index} to={`/restaurant/${restaurants._id}`}>
-                {restaurants.name}
+              <div> {restaurant.category}</div>
+              <img src={restaurant.images[0]}></img>
+              <Link key={index} to={`/restaurant/${restaurant._id}`}>
+                {restaurant.name}
               </Link>
-              <div> {restaurants.location}</div>
+              <div> {restaurant.location}</div>
             </div>
           );
         })}

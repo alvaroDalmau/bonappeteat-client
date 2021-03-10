@@ -67,6 +67,7 @@ export default class InfoUser extends Component {
           ></input>
           <button type="submit">Apply changes</button>
         </form>
+        <button>Your bookings</button>
         <button onClick={deleteUser}>Delete Account</button>
       </React.Fragment>
     );

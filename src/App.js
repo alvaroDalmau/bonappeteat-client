@@ -4,17 +4,17 @@ import { Switch, Route, withRouter } from 'react-router-dom';
 import axios from 'axios';
 import config from './config';
 
-//IMPRTED COMPONENTS
+//IMPORTING COMPONENTS
 import NavBar from './components/NavBar';
 import Home from './components/Home.js';
 import RestaurantDetails from './components/RestaurantDetails';
 import UserProfile from './components/UserProfile';
-import FormBooking from './components/FormBooking';
 
 //RUNNING UP
 class App extends Component {
   state = {
     loggedInUser: null,
+    bookings: [],
     fetching: true,
   };
 
@@ -24,10 +24,19 @@ class App extends Component {
       axios
         .get(`${config.API_URL}/api/user`, { withCredentials: true })
         .then(response => {
-          this.setState({
-            loggedInUser: response.data,
-            fetching: false,
-          });
+          //grabbing bookings info of each user
+          axios
+            .get(`${config.API_URL}/api/bookings`, { withCredentials: true })
+            .then(bookings => {
+              this.setState({
+                loggedInUser: response.data,
+                bookings: bookings.data,
+                fetching: false,
+              });
+            })
+            .catch(err => {
+              console.log(err);
+            });
         })
         .catch(() => {
           console.log('Error grabing data from user session');
@@ -124,7 +133,7 @@ class App extends Component {
 
   render() {
     //variable declaration
-    const { loggedInUser, fetching } = this.state;
+    const { loggedInUser, bookings, fetching } = this.state;
     if (fetching) {
       return <p>Loading</p>;
     }
@@ -141,18 +150,13 @@ class App extends Component {
             }}
           />
           <Route
-            path="/restaurant/:restaurantId"
-            render={routeProps => {
-              <RestaurantDetails {...routeProps} />;
-            }}
-          />
-          <Route
             path="/profile"
             render={routeProps => {
               return (
                 <UserProfile
                   changeImg={this.handleImgProfile}
                   loggedInUser={loggedInUser}
+                  bookings={bookings}
                   changeUser={this.handleChange}
                   deleteUser={this.handleDelete}
                   {...routeProps}
@@ -161,9 +165,10 @@ class App extends Component {
             }}
           />
           <Route
-            path="/:restauranId/create"
-            user={loggedInUser}
-            component={FormBooking}
+            path="/restaurant/:restaurantId"
+            render={routeProps => {
+              return <RestaurantDetails user={loggedInUser} {...routeProps} />;
+            }}
           />
         </Switch>
       </React.Fragment>

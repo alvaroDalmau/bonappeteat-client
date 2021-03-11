@@ -2,11 +2,15 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import config from '../config.js';
 import { withRouter, Redirect } from 'react-router-dom';
+import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
+import 'leaflet/dist/leaflet.css';
+import L from 'leaflet';
 
 class RestaurantDetails extends Component {
   state = {
     restaurant: {},
     bookings: [],
+    position: [],
   };
 
   componentDidMount() {
@@ -17,6 +21,7 @@ class RestaurantDetails extends Component {
         this.setState({
           restaurant: response.data,
           fetching: false,
+          position: response.data.location,
         });
       })
       .catch(() => {
@@ -53,11 +58,16 @@ class RestaurantDetails extends Component {
   };
 
   render() {
-    const { restaurant } = this.state;
+    const { restaurant, position } = this.state;
     const { loggedInUser } = this.props;
     if (!loggedInUser) {
       return <Redirect to={'/'} />;
     }
+    const iconMark = new L.Icon({
+      iconUrl:
+        'https://lh3.googleusercontent.com/proxy/jsFMaNyp7f09WiCZ9pJfw6BFzo_5L08P5NGpVdrTS9f8uMZi4kptF7Zb1GET5XWvR86XIlZ96SBNTm2PtmbYoYdN4W-RySJ7Fo3PA-TgWXuFvjI2N-han9K0dW7IAC9cXg',
+      iconSize: [68, 65],
+    });
     return (
       <React.Fragment>
         <h1>{restaurant.name}</h1>
@@ -66,6 +76,26 @@ class RestaurantDetails extends Component {
           restaurant.images.map((e, i) => {
             return <img key={i} src={e} alt="restaurant image" />;
           })
+        ) : (
+          <div></div>
+        )}
+        {position.length > 0 ? (
+          <MapContainer
+            style={{ width: '500px', height: '300px' }}
+            center={position}
+            zoom={13}
+            scrollWheelZoom={true}
+          >
+            <TileLayer
+              attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+              url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+            />
+            {/* MARKER */}
+
+            <Marker icon={iconMark} position={position}>
+              <Popup>{restaurant.name}</Popup>
+            </Marker>
+          </MapContainer>
         ) : (
           <div></div>
         )}

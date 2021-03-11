@@ -3,6 +3,8 @@ import axios from 'axios';
 import { Link } from 'react-router-dom';
 import config from '../config.js';
 
+import Maps from './Maps';
+
 class Restaurant extends Component {
   state = {
     restaurants: [],
@@ -103,18 +105,21 @@ class Restaurant extends Component {
             <span className="sr-only">Loading...</span>
           </div>
         ) : (
-          showResult.map((restaurant, index) => {
-            return (
-              <div key={index}>
-                <div> {restaurant.category}</div>
-                <img src={restaurant.images[0]}></img>
-                <Link to={`/restaurant/${restaurant._id}`}>
-                  {restaurant.name}
-                </Link>
-                <div> {restaurant.location}</div>
-              </div>
-            );
-          })
+          <React.Fragment>
+            <Maps restaurants={showResult} />
+            {showResult.map((restaurant, index) => {
+              return (
+                <div key={index}>
+                  <div> {restaurant.category}</div>
+                  <img src={restaurant.images[0]}></img>
+                  <Link to={`/restaurant/${restaurant._id}`}>
+                    {restaurant.name}
+                  </Link>
+                  <div> {restaurant.location}</div>
+                </div>
+              );
+            })}
+          </React.Fragment>
         )}
       </React.Fragment>
     );

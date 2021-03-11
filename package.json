@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "axios": "^0.21.1",
+    "bootstrap": "^4.6.0",
     "icons": "^1.0.0",
     "leaflet": "^1.7.1",
     "react": "^17.0.1",

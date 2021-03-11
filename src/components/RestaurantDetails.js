@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import config from '../config.js';
-import { Link, withRouter } from 'react-router-dom';
+import { Redirect, Link, withRouter } from 'react-router-dom';
 import { MapContainer, TileLayer, Marker, Popup} from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
 import Rating from "./Rating";
+import FormBooking from './FormBooking'
 
 class RestaurantDetails extends Component {
   state = {
@@ -18,11 +19,11 @@ class RestaurantDetails extends Component {
     let restaurantId = this.props.match.params.restaurantId;
     axios
       .get(`${config.API_URL}/api/restaurant/${restaurantId}`)
-      .then((response) => {
-        console.log("data fetched");
+      .then(response => {
         this.setState({
           restaurant: response.data,
-          position: response.data.location
+          position: response.data.location,
+          fetching: false,
         });
       })
       .catch(() => {
@@ -30,7 +31,7 @@ class RestaurantDetails extends Component {
       });
   }
 
-    handleCreateBooking = event => {
+  handleCreateBooking = event => {
     event.preventDefault();
     let restaurantId = this.props.match.params.restaurantId;
     axios
@@ -60,7 +61,10 @@ class RestaurantDetails extends Component {
   render() {
     const { restaurant , position} = this.state;
     const {loggedInUser}= this.props
-
+    
+    if (!loggedInUser) {
+      return <Redirect to={'/'} />;
+    }
 
     const iconMark = new L.Icon({
       iconUrl:
@@ -70,24 +74,23 @@ class RestaurantDetails extends Component {
 
     return (
       <React.Fragment>
-        
         <h1>{restaurant.name}</h1>
-        <Rating restaurant={restaurant}/>
+        <Rating restaurant={restaurant} />
         <div>{restaurant.description}</div>
-         {restaurant.images ? (
+        {restaurant.images ? (
           restaurant.images.map((e, i) => {
-            return <img key={i} src={e} alt='restaurant image' />;
+            return <img key={i} src={e} alt="restaurant image" />;
           })
         ) : (
           <div></div>
         )}
-        <Link
+        {/* <Link
           key={restaurant._id}
           to={`/${restaurant._id}/create`}
           onSubmit={this.handleCreateBooking}
         >
           <button>Make your Booking</button>
-        </Link>
+        </Link> */}
 
         {/* MAP DETAILS */}
 
@@ -111,6 +114,24 @@ class RestaurantDetails extends Component {
         ) : (
           <div></div>
         )}
+
+        {/* BOOKINGS */}
+        <FormBooking onSubmit={this.handleCreateBooking} />
+        {/* <form onSubmit={this.handleCreateBooking}>
+          <label>Choose the day and time:</label>
+          <input name="dateTime" type="datetime-local" step="1800"></input>
+          <br />
+          <label>Pax:</label>
+          <input
+            name="pax"
+            type="number"
+            placeholder="pax"
+            min="0"
+            max="10"
+          ></input>
+          <br />
+          <button type="submit">Create booking</button>
+        </form> */}
       </React.Fragment>
     );
   }

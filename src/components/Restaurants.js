@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 import config from '../config.js';
-import Search from './Search.js';
 import Maps from "./Maps";
 import { FaStar } from "react-icons/fa";
 
@@ -11,18 +10,24 @@ class Restaurant extends Component {
   state = {
     restaurants: [],
     filterRestaurant: [],
+    searchRestaurant:[],
+    showResult: [],
+    fetching: true,
     rating: 0,
     hover: 0,
+
   };
 
   componentDidMount() {
     axios
       .get(`${config.API_URL}/api/restaurants`)
-      .then((response) => {
-        console.log("data fetched");
+      .then(response => {
         this.setState({
           restaurants: response.data,
+          searchRestaurant: response.data,
           filterRestaurant: response.data,
+          showResult: response.data,
+          fetching: false,
         });
       })
       .catch(() => {
@@ -32,78 +37,107 @@ class Restaurant extends Component {
 
   handleSearch = (event) => {
     let searchText = event.target.value.toLowerCase();
-    console.log(this.state.filterRestaurant);
-    let filteredArray = this.state.restaurants.filter((singleRestaurant) => {
+    let filteredArray = this.state.restaurants.filter(singleRestaurant => {
       return singleRestaurant.name.toLowerCase().includes(searchText);
     });
-
-    let y = [];
-    this.state.filterRestaurant.forEach((e) => {
-      filteredArray.forEach((j) => {
-        if (e.name == j.name) {
-          y.push(j);
-        }
-      });
-    });
-
-    console.log(y);
-    this.setState({
-      filterRestaurant: filteredArray,
-    });
+    this.setState(
+      {
+        searchRestaurant: filteredArray,
+      },
+      this.handleShowFilter
+    );
   };
 
   handleFilter = (event) => {
     let filterKey = event.target.value;
-
-    if (filterKey == "all") {
-      this.setState({
-        filterRestaurant: this.state.restaurants,
-      });
+    if (filterKey == 'all') {
+      this.setState(
+        {
+          filterRestaurant: this.state.restaurants,
+        },
+        this.handleShowFilter
+      );
     } else {
       let filteredArray = this.state.restaurants.filter((singleRestaurant) => {
         return singleRestaurant.category.includes(filterKey);
       });
-
-      this.setState({
-        filterRestaurant: filteredArray,
-      });
+      this.setState(
+        {
+          filterRestaurant: filteredArray,
+        },
+        this.handleShowFilter
+      );
     }
   };
 
-  render() {
-    const { restaurants, filterRestaurant, rating, hover} = this.state;
-    return (
-      <div>
-        <h1>All the restaurants</h1>
-        {/* FILTER FORM */}
+  handleShowFilter = () => {
+    let filteredArr = [];
+    this.state.searchRestaurant.forEach(el => {
+      this.state.filterRestaurant.forEach(e => {
+        if (el.name == e.name) filteredArr.push(e);
+      });
+    });
+    this.setState({
+      showResult: filteredArr,
+    });
+  };
 
+  render() {
+    console.log('rendering');
+    const { restaurants, filterRestaurant, rating, hover, showResult, fetching } = this.state;
+    
+    if (fetching) {
+      return (
+        <div className="spinner-grow text-info" role="status">
+          <span className="sr-only">Loading...</span>
+        </div>
+      )
+    }
+    return (
+      <React.Fragment>
+        <h1>All the restaurants</h1>
+
+        {/* FILTER BAR */}
         <select onChange={this.handleFilter}>
           <option key={restaurants._id} value="all">
             All
           </option>
-          {filterRestaurant.map((restaurants) => (
-            <option key={restaurants._id} value={restaurants.category}>
+          {restaurants.map((restaurants,index) => (
+            <option key={index} value={restaurants.category}>
               {restaurants.category}
             </option>
           ))}
         </select>
 
         {/* SEARCH BAR */}
-        <Search change={this.handleSearch} />
+        <input
+          onChange={this.handleSearch}
+          type="text"
+          placeholder="Enter the name"
+        ></input>
+
+
+
         <Maps restaurants={filterRestaurant} />
-        {filterRestaurant.map((restaurants, index) => {
+
+
+        {showResult.map((restaurant, index) => {
           return (
-            <div>
-              <img src={restaurants.images[0]}></img>
-              {/* <div>{restaurants.category}</div> */}
+            <div key={index}>
+              <div>{restaurant.category}</div>
+              <img src={restaurant.images[0]}></img>
               <Link
-                key={restaurants._id}
-                restaurants={restaurants}
-                to={`/restaurant/${restaurants._id}`}
-              >
-                <h3>{restaurants.name}</h3>
+                key={restaurant._id}
+                // restaurant={restaurant}
+                to={`/restaurant/${restaurant._id}`}>
+                <h3>{restaurant.name}</h3>
               </Link>
-              {[...Array(5)].map((star, index) => {
+            </div>
+          )
+          })
+        }
+
+              {/* {[...Array(5)].map((star, index) => {
                 const ratingValue = index + 1;
                 return (
                   <label>
@@ -124,11 +158,9 @@ class Restaurant extends Component {
                     />
                   </label>
                 );
-              })}
-            </div>
-          );
-        })}
-      </div>
+              })} */}
+
+      </React.Fragment>
     );
   }
 }

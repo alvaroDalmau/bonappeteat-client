@@ -20,7 +20,7 @@ export default class NavBar extends Component {
           </nav>
         ) : (
           <nav>
-            <Link to="/profile">Profile</Link>{" "}
+            <Link to="/profile">Profile</Link>
             <Link to="/" onClick={onLogOut}>
               Log OUT
             </Link>

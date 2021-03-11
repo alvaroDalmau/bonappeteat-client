@@ -16,6 +16,7 @@ class RestaurantDetails extends Component {
       .then(response => {
         this.setState({
           restaurant: response.data,
+          fetching: false,
         });
       })
       .catch(() => {
@@ -39,6 +40,7 @@ class RestaurantDetails extends Component {
         this.setState(
           {
             bookings: [response.data],
+            msg: `A booking at ${response.data.restaurant} has been created`,
           },
           () => {
             this.props.history.push('/');

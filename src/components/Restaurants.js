@@ -79,17 +79,9 @@ class Restaurant extends Component {
   render() {
     console.log('rendering');
     const { restaurants, showResult, fetching } = this.state;
-    if (fetching) {
-      return (
-        <div className="spinner-grow text-info" role="status">
-          <span className="sr-only">Loading...</span>
-        </div>
-      );
-    }
     return (
       <React.Fragment>
         <h1>All the restaurants</h1>
-
         {/* FILTER BAR */}
         <select onChange={this.handleFilter}>
           <option key={restaurants._id} value="all">
@@ -107,19 +99,24 @@ class Restaurant extends Component {
           type="text"
           placeholder="Enter the name"
         ></input>
-
-        {showResult.map((restaurant, index) => {
-          return (
-            <div key={index}>
-              <div> {restaurant.category}</div>
-              <img src={restaurant.images[0]}></img>
-              <Link to={`/restaurant/${restaurant._id}`}>
-                {restaurant.name}
-              </Link>
-              <div> {restaurant.location}</div>
-            </div>
-          );
-        })}
+        {fetching ? (
+          <div className="spinner-grow text-info" role="status">
+            <span className="sr-only">Loading...</span>
+          </div>
+        ) : (
+          showResult.map((restaurant, index) => {
+            return (
+              <div key={index}>
+                <div> {restaurant.category}</div>
+                <img src={restaurant.images[0]}></img>
+                <Link to={`/restaurant/${restaurant._id}`}>
+                  {restaurant.name}
+                </Link>
+                <div> {restaurant.location}</div>
+              </div>
+            );
+          })
+        )}
       </React.Fragment>
     );
   }

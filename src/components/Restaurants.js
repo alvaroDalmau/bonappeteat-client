@@ -12,19 +12,39 @@ class Restaurant extends Component {
     searchRestaurant: [],
     showResult: [],
     fetching: true,
+    msg: false,
+    message: '',
   };
 
   componentDidMount() {
     axios
       .get(`${config.API_URL}/api/restaurants`)
       .then(response => {
-        this.setState({
-          restaurants: response.data,
-          searchRestaurant: response.data,
-          filterRestaurant: response.data,
-          showResult: response.data,
-          fetching: false,
-        });
+        this.setState(
+          {
+            restaurants: response.data,
+            searchRestaurant: response.data,
+            filterRestaurant: response.data,
+            showResult: response.data,
+            fetching: false,
+          },
+          () => {
+            if (this.props.msg) {
+              this.setState(
+                {
+                  msg: true,
+                  message: this.props.msg,
+                },
+                () => {
+                  setTimeout(
+                    () => this.setState({ msg: false, message: '' }),
+                    4000
+                  );
+                }
+              );
+            }
+          }
+        );
       })
       .catch(() => {
         console.log('Error grabing restaurants');
@@ -79,9 +99,10 @@ class Restaurant extends Component {
   };
 
   render() {
-    const { restaurants, showResult, fetching } = this.state;
+    const { restaurants, showResult, fetching, msg, message } = this.state;
     return (
       <React.Fragment>
+        {msg ? <div>{message}</div> : null}
         <h1>All the restaurants</h1>
         {/* FILTER BAR */}
         <select onChange={this.handleFilter}>

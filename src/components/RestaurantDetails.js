@@ -11,6 +11,7 @@ class RestaurantDetails extends Component {
     restaurant: {},
     bookings: [],
     position: [],
+    timeValue: '',
   };
 
   componentDidMount() {
@@ -32,29 +33,40 @@ class RestaurantDetails extends Component {
   handleCreateBooking = event => {
     event.preventDefault();
     let restaurantId = this.props.match.params.restaurantId;
-    axios
-      .post(
-        `${config.API_URL}/api/${restaurantId}/create`,
-        {
-          dateTime: event.target.dateTime.value,
-          pax: event.target.pax.value,
-        },
-        { withCredentials: true }
-      )
-      .then(response => {
-        this.setState(
-          {
-            bookings: [response.data],
-            msg: `A booking at ${response.data.restaurant} has been created`,
-          },
-          () => {
-            this.props.history.push({ pathname: '/', mesage: this.state.msg });
-          }
-        );
-      })
-      .catch(err => {
-        console.log('Bookings creation failed', err);
-      });
+    this.setState(
+      {
+        timeValue: event.target.time.value,
+      },
+      () => {
+        axios
+          .post(
+            `${config.API_URL}/api/${restaurantId}/create`,
+            {
+              date: event.target.date.value,
+              time: this.state.timeValue,
+              pax: event.target.pax.value,
+            },
+            { withCredentials: true }
+          )
+          .then(response => {
+            this.setState(
+              {
+                bookings: [response.data],
+                msg: `A booking has been created`,
+              },
+              () => {
+                this.props.history.push({
+                  pathname: '/',
+                  message: this.state.msg,
+                });
+              }
+            );
+          })
+          .catch(err => {
+            console.log('Bookings creation failed', err);
+          });
+      }
+    );
   };
 
   render() {
@@ -100,8 +112,23 @@ class RestaurantDetails extends Component {
           <div></div>
         )}
         <form onSubmit={this.handleCreateBooking}>
-          <label>Choose the day and time:</label>
-          <input name="dateTime" type="datetime-local" step="1800"></input>
+          <label>Choose the day:</label>
+          <input type="date" name="date"></input>
+          <br />
+          <label>
+            Hour:
+            <select name="time">
+              <option></option>
+              <option disabled="disabled">---Lunch---</option>
+              <option>12:30-13:30</option>
+              <option>13:30-14:30</option>
+              <option>14:30-15:30</option>
+              <option disabled="disabled">---Dinner---</option>
+              <option>19:30-20:30</option>
+              <option>20:30-21:30</option>
+              <option>21:30-22:30</option>
+            </select>
+          </label>
           <br />
           <label>Pax:</label>
           <input
@@ -112,7 +139,7 @@ class RestaurantDetails extends Component {
             max="10"
           ></input>
           <br />
-          <button type="submit">Create booking</button>
+          <button type="submit">Create your Booking</button>
         </form>
       </React.Fragment>
     );

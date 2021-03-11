@@ -5,10 +5,13 @@ import Restaurants from './Restaurants';
 export default class Home extends Component {
   render() {
     const { loggedInUser, onSign } = this.props;
-    console.log(this.props.location);
     return (
       <React.Fragment>
-        {!loggedInUser ? <AboutUs onSign={onSign} /> : <Restaurants />}
+        {!loggedInUser ? (
+          <AboutUs onSign={onSign} />
+        ) : (
+          <Restaurants msg={this.props.location.message} />
+        )}
       </React.Fragment>
     );
   }

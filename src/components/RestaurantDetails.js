@@ -5,12 +5,13 @@ import { Link, withRouter } from 'react-router-dom';
 import { MapContainer, TileLayer, Marker, Popup} from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
+import Rating from "./Rating";
 
 class RestaurantDetails extends Component {
   state = {
     restaurant: {},
     bookings: [],
-    position:[]
+    position:[],
   };
 
   componentDidMount() {
@@ -29,24 +30,25 @@ class RestaurantDetails extends Component {
       });
   }
 
-  handleSubmit = event => {
+    handleCreateBooking = event => {
     event.preventDefault();
     let restaurantId = this.props.match.params.restaurantId;
     axios
-      .post(`${config.API_URL}/api/${restaurantId}/create`, {
-        user: this.props.user,
-        restaurant: restaurantId,
-        dateTime: event.target.dateTime.value,
-        pax: event.target.pax.value,
-      },)
+      .post(
+        `${config.API_URL}/api/${restaurantId}/create`,
+        {
+          dateTime: event.target.dateTime.value,
+          pax: event.target.pax.value,
+        },
+        { withCredentials: true }
+      )
       .then(response => {
-        console.log(response);
         this.setState(
           {
             bookings: [response.data],
           },
           () => {
-            this.props.history.push('/');
+            this.props.history.push('/')
           }
         );
       })
@@ -57,10 +59,7 @@ class RestaurantDetails extends Component {
   
   render() {
     const { restaurant , position} = this.state;
-    console.log(restaurant.location)
-    const {user}= this.props
-    
-    console.log(position)
+    const {loggedInUser}= this.props
 
 
     const iconMark = new L.Icon({
@@ -71,13 +70,21 @@ class RestaurantDetails extends Component {
 
     return (
       <React.Fragment>
+        
         <h1>{restaurant.name}</h1>
+        <Rating restaurant={restaurant}/>
         <div>{restaurant.description}</div>
-        <img src={restaurant.images} alt="restaurant image" />
+         {restaurant.images ? (
+          restaurant.images.map((e, i) => {
+            return <img key={i} src={e} alt='restaurant image' />;
+          })
+        ) : (
+          <div></div>
+        )}
         <Link
           key={restaurant._id}
           to={`/${restaurant._id}/create`}
-          onSubmit={this.handleSubmit}
+          onSubmit={this.handleCreateBooking}
         >
           <button>Make your Booking</button>
         </Link>

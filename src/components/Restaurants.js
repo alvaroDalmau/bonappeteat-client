@@ -77,7 +77,6 @@ class Restaurant extends Component {
   };
 
   render() {
-    console.log('rendering');
     const { restaurants, showResult, fetching } = this.state;
     return (
       <React.Fragment>

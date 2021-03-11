@@ -43,7 +43,7 @@ class RestaurantDetails extends Component {
             msg: `A booking at ${response.data.restaurant} has been created`,
           },
           () => {
-            this.props.history.push('/');
+            this.props.history.push({ pathname: '/', mesage: this.state.msg });
           }
         );
       })

@@ -141,9 +141,13 @@ class App extends Component {
           <Route
             exact
             path="/"
-            render={() => {
+            render={routeProps => {
               return (
-                <Home onSign={this.handleSign} loggedInUser={loggedInUser} />
+                <Home
+                  onSign={this.handleSign}
+                  loggedInUser={loggedInUser}
+                  {...routeProps}
+                />
               );
             }}
           />

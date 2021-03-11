@@ -2,12 +2,13 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 import config from '../config.js';
-import Search from './Search.js';
 
 class Restaurant extends Component {
   state = {
     restaurants: [],
     filterRestaurant: [],
+    searchRestaurant: [],
+    showResult: [],
     fetching: true,
   };
 
@@ -15,10 +16,11 @@ class Restaurant extends Component {
     axios
       .get(`${config.API_URL}/api/restaurants`)
       .then(response => {
-        console.log('data fetched');
         this.setState({
           restaurants: response.data,
+          searchRestaurant: response.data,
           filterRestaurant: response.data,
+          showResult: response.data,
           fetching: false,
         });
       })
@@ -29,46 +31,54 @@ class Restaurant extends Component {
 
   handleSearch = event => {
     let searchText = event.target.value.toLowerCase();
-    console.log(this.state.filterRestaurant);
     let filteredArray = this.state.restaurants.filter(singleRestaurant => {
       return singleRestaurant.name.toLowerCase().includes(searchText);
     });
-
-    let y = [];
-    this.state.filterRestaurant.forEach(e => {
-      filteredArray.forEach(j => {
-        if (e.name == j.name) {
-          y.push(j);
-        }
-      });
-    });
-
-    console.log(y);
-    this.setState({
-      filterRestaurant: filteredArray,
-    });
+    this.setState(
+      {
+        searchRestaurant: filteredArray,
+      },
+      this.handleShowFilter
+    );
   };
 
   handleFilter = event => {
     let filterKey = event.target.value;
-
     if (filterKey == 'all') {
-      this.setState({
-        filterRestaurant: this.state.restaurants,
-      });
+      this.setState(
+        {
+          filterRestaurant: this.state.restaurants,
+        },
+        this.handleShowFilter
+      );
     } else {
       let filteredArray = this.state.restaurants.filter(singleRestaurant => {
         return singleRestaurant.category.includes(filterKey);
       });
-
-      this.setState({
-        filterRestaurant: filteredArray,
-      });
+      this.setState(
+        {
+          filterRestaurant: filteredArray,
+        },
+        this.handleShowFilter
+      );
     }
   };
 
+  handleShowFilter = () => {
+    let filteredArr = [];
+    this.state.searchRestaurant.forEach(el => {
+      this.state.filterRestaurant.forEach(e => {
+        if (el.name == e.name) filteredArr.push(e);
+      });
+    });
+    this.setState({
+      showResult: filteredArr,
+    });
+  };
+
   render() {
-    const { restaurants, filterRestaurant } = this.state;
+    console.log('rendering');
+    const { restaurants, showResult, fetching } = this.state;
     if (fetching) {
       return (
         <div className="spinner-grow text-info" role="status">
@@ -77,10 +87,10 @@ class Restaurant extends Component {
       );
     }
     return (
-      <div>
+      <React.Fragment>
         <h1>All the restaurants</h1>
-        {/* FILTER FORM */}
 
+        {/* FILTER BAR */}
         <select onChange={this.handleFilter}>
           <option key={restaurants._id} value="all">
             All
@@ -91,22 +101,26 @@ class Restaurant extends Component {
             </option>
           ))}
         </select>
-
         {/* SEARCH BAR */}
-        <Search change={this.handleSearch} />
-        {filterRestaurant.map((restaurant, index) => {
+        <input
+          onChange={this.handleSearch}
+          type="text"
+          placeholder="Enter the name"
+        ></input>
+
+        {showResult.map((restaurant, index) => {
           return (
-            <div>
+            <div key={index}>
               <div> {restaurant.category}</div>
               <img src={restaurant.images[0]}></img>
-              <Link key={index} to={`/restaurant/${restaurant._id}`}>
+              <Link to={`/restaurant/${restaurant._id}`}>
                 {restaurant.name}
               </Link>
               <div> {restaurant.location}</div>
             </div>
           );
         })}
-      </div>
+      </React.Fragment>
     );
   }
 }

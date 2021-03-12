@@ -125,11 +125,11 @@ class Restaurant extends Component {
           <label htmlFor="exampleFormControlSelect1">Categories</label>
           <select onChange={this.handleFilter} className="form-control">
             <option value="all">All</option>
-            {restaurants.map((restaurants, index) => (
-              <option key={index} value={restaurants.category}>
-                {restaurants.category}
-              </option>
-            ))}
+            <option value="chinese">chinesse</option>
+            <option value="Indian">Indian</option>
+            <option value="Burguer">Burguer</option>
+            <option value="Spanish">Spanish</option>
+            <option value="Italian">Italian</option>
           </select>
         </div>
         {/* SEARCH BAR */}

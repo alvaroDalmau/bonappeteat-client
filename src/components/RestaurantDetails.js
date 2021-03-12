@@ -110,7 +110,7 @@ class RestaurantDetails extends Component {
         )}
         {position.length > 0 ? (
           <MapContainer
-            style={{ MaxWidth: '300px', maxHeight: '300px' }}
+            style={{ width: '375px', height: '400px', margin: '0 auto' }}
             center={position}
             zoom={13}
             scrollWheelZoom={true}

@@ -196,7 +196,7 @@ class RestaurantDetails extends Component {
             ></input>
           </div>
           <button type="submit" className="btn btn-primary">
-            Reserve your Booking
+            Get your Booking
           </button>
         </form>
       </React.Fragment>

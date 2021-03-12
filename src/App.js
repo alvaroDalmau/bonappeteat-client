@@ -11,6 +11,8 @@ import Home from './components/Home.js';
 import RestaurantDetails from './components/RestaurantDetails';
 import UserProfile from './components/UserProfile';
 import Error from './components/Error';
+import NavBarCSS from './components/NavBar.css';
+import AppCss from './App.css';
 
 //RUNNING UP
 class App extends Component {

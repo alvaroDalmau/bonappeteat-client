@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 import config from '../config.js';
-
+import RestaurantCss from './Restaurants.css';
 import Maps from './Maps';
 
 class Restaurant extends Component {
@@ -38,7 +38,7 @@ class Restaurant extends Component {
                 () => {
                   setTimeout(
                     () => this.setState({ msg: false, message: '' }),
-                    4000
+                    3000
                   );
                 }
               );
@@ -102,25 +102,51 @@ class Restaurant extends Component {
     const { restaurants, showResult, fetching, msg, message } = this.state;
     return (
       <React.Fragment>
-        {msg ? <div>{message}</div> : null}
-        <h1>All the restaurants</h1>
+        {msg ? (
+          <div
+            className="alert alert-success"
+            role="alert"
+            style={{ width: '90%', margin: '5px auto' }}
+          >
+            {message}
+          </div>
+        ) : null}
+        <h2>Pick restaurant</h2>
         {/* FILTER BAR */}
-        <select onChange={this.handleFilter}>
-          <option key={restaurants._id} value="all">
-            All
-          </option>
+        {/* <select onChange={this.handleFilter}>
+          <option value="all">All</option>
           {restaurants.map((restaurants, index) => (
             <option key={index} value={restaurants.category}>
               {restaurants.category}
             </option>
           ))}
-        </select>
+        </select> */}
+        <div className="form-group filter">
+          <label htmlFor="exampleFormControlSelect1">Categories</label>
+          <select onChange={this.handleFilter} className="form-control">
+            <option value="all">All</option>
+            {restaurants.map((restaurants, index) => (
+              <option key={index} value={restaurants.category}>
+                {restaurants.category}
+              </option>
+            ))}
+          </select>
+        </div>
         {/* SEARCH BAR */}
-        <input
+        {/* <input
           onChange={this.handleSearch}
           type="text"
           placeholder="Enter the name"
-        ></input>
+        ></input> */}
+
+        <input
+          onChange={this.handleSearch}
+          className="form-control mr-sm-2 search"
+          type="text"
+          placeholder="Enter restaurant name"
+          aria-label="Search"
+        />
+
         {fetching ? (
           <div className="spinner-grow text-info" role="status">
             <span className="sr-only">Loading...</span>
@@ -129,15 +155,29 @@ class Restaurant extends Component {
           <React.Fragment>
             <Maps restaurants={showResult} />
             {showResult.map((restaurant, index) => {
-              return (
-                <div key={index}>
-                  <div> {restaurant.category}</div>
+              {
+                /* <div key={index}>
                   <img src={restaurant.images[0]}></img>
-                  <Link to={`/restaurant/${restaurant._id}`}>
+                  <div> {restaurant.category}</div>
                     {restaurant.name}
+                  <Link to={`/restaurant/${restaurant._id}`}>
                   </Link>
-                  <div> {restaurant.location}</div>
-                </div>
+                </div> */
+              }
+              return (
+                <Link key={index} to={`/restaurant/${restaurant._id}`}>
+                  <div className="card" style={{ width: '20rem' }}>
+                    <img
+                      className="card-img-top"
+                      src={restaurant.images[0]}
+                      alt="restaurant image"
+                    />
+                    <div className="card-body">
+                      <h4 className="card-title"> {restaurant.name}</h4>
+                      <p className="card-text">{restaurant.category}</p>
+                    </div>
+                  </div>
+                </Link>
               );
             })}
           </React.Fragment>

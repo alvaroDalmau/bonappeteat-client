@@ -1,0 +1,29 @@
+.display-img {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+}
+.display-img img {
+  max-width: 95%;
+  object-fit: scale-down;
+  margin: 5px auto;
+}
+.form-booking {
+  max-width: 90%;
+  margin: 30px auto;
+  border: 1px solid #ed8074;
+  border-radius: 15px;
+  padding: 20px;
+  color: #ed8074;
+}
+.form-booking input {
+  margin: 2px;
+  min-width: 70px;
+  outline-color: gray;
+}
+.form-booking button {
+  display: block;
+  background-color: #ed8074;
+  margin: 20px auto;
+  border: none;
+}

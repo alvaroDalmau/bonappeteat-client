@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { MapContainer, TileLayer, Marker, Popup, useMap } from 'react-leaflet';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
+import MapsCss from './Maps.css';
 
 function MyComponent(props) {
   const map = useMap();
@@ -13,7 +14,10 @@ function MyComponent(props) {
 class Maps extends Component {
   state = {
     position: [42, -3],
+    display: false,
+    icon: '+',
   };
+
   componentDidMount() {
     if ('geolocation' in navigator) {
       navigator.geolocation.getCurrentPosition(position1 => {
@@ -25,52 +29,65 @@ class Maps extends Component {
       console.log('Not Available');
     }
   }
+
+  handleDisplay = () => {
+    !this.state.display
+      ? this.setState({ display: true, icon: '-' })
+      : this.setState({ display: false, icon: '+' });
+  };
+
   render() {
     const { restaurants } = this.props;
+    const { display, icon } = this.state;
     // console.log(this.state.position)
     const iconMark = new L.Icon({
-      iconUrl:
-        'https://e7.pngegg.com/pngimages/135/341/png-clipart-la-halte-gourmande-menu-restaurant-cantina-pizza-logo-restaurant-antler-hand.png',
-      iconSize: [68, 65],
+      iconUrl: 'https://freewifi.com.cy/images/icons/locationicon.png',
+      iconSize: [40, 42],
     });
     return (
       <div>
-        <h4>Maps</h4>
-        <div>
-          <MapContainer
-            style={{ width: '800px', height: '500px' }}
-            // MAP POSITION
-            center={this.state.position}
-            zoom={15}
-            scrollWheelZoom={true}
-          >
-            <MyComponent center={this.state.position} />
-            <TileLayer
-              attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-              url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-            />
-            {/* MARKER */}
-            {restaurants ? (
-              restaurants.map((singleRestaurant, i) => {
-                return (
-                  <Marker
-                    key={i}
-                    icon={iconMark}
-                    position={singleRestaurant.location}
-                  >
-                    <Popup>
-                      <Link to={`/restaurant/${singleRestaurant._id}`}>
-                        {singleRestaurant.name}
-                      </Link>
-                    </Popup>
-                  </Marker>
-                );
-              })
-            ) : (
-              <div></div>
-            )}
-          </MapContainer>
-        </div>
+        <a className="icon-map" onClick={this.handleDisplay}>
+          {icon} Map
+        </a>
+        {display ? (
+          <div className="map-container">
+            <MapContainer
+              style={{ width: '800px', height: '400px' }}
+              // MAP POSITION
+              center={this.state.position}
+              zoom={15}
+              scrollWheelZoom={true}
+            >
+              <MyComponent center={this.state.position} />
+              <TileLayer
+                attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+                url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+              />
+              {/* MARKER */}
+              {restaurants ? (
+                restaurants.map((singleRestaurant, i) => {
+                  return (
+                    <Marker
+                      key={i}
+                      icon={iconMark}
+                      position={singleRestaurant.location}
+                    >
+                      <Popup>
+                        <Link to={`/restaurant/${singleRestaurant._id}`}>
+                          {singleRestaurant.name}
+                        </Link>
+                      </Popup>
+                    </Marker>
+                  );
+                })
+              ) : (
+                <div></div>
+              )}
+            </MapContainer>
+          </div>
+        ) : (
+          <div></div>
+        )}
       </div>
     );
   }

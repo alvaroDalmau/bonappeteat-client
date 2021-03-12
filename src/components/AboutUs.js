@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
 import LogForm from './LogForm';
+import AboutUsCSS from './AboutUs.css'
 
 export default class AboutUs extends Component {
   render() {
     const { onSign } = this.props;
     return (
       <React.Fragment>
-        <h1>Bon Appeteat</h1>
+        <h1>Enjoy your meal!</h1>
         <p>
           Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed eiusmod
           tempor incidunt ut labore et dolore magna aliqua. Ut enim ad minim

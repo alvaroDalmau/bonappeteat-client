@@ -1,0 +1,24 @@
+.text-muted {
+  font-size: 15px;
+  margin-top: 40px;
+}
+.logForm {
+  color: #ed8074;
+  width: 80%;
+  margin: 0 auto;
+  margin-bottom: 60px;
+}
+.logForm input {
+  border-color: #ed8074;
+}
+.logForm button {
+  display: block;
+  background-color: #ed8074;
+  margin: 0 auto;
+  border: none;
+}
+@media (min-width: 768px) {
+  .logForm {
+    width: 40%;
+  }
+}

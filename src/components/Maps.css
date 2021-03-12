@@ -1,0 +1,11 @@
+.icon-map {
+  display: block;
+  background-color: white;
+  text-align: center;
+  color: #ed8074;
+  font-size: 20px;
+  padding: 15px 0;
+}
+.map-container {
+  margin: 0 auto;
+}

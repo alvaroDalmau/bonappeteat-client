@@ -1,0 +1,32 @@
+.logoNav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #ed8074;
+}
+.aNav {
+  display: flex;
+}
+.aNav img {
+  height: 60px;
+  margin: 10px;
+}
+.aNav p {
+  margin: auto 0;
+  font-size: 25px;
+  color: #ed8074;
+}
+.hamburguer-icon {
+  height: 40px;
+  margin-right: 20px;
+}
+.account-btn {
+  display: block;
+  background-color: #ed8074;
+  text-align: center;
+  color: white;
+  font-size: 25px;
+}
+.account-btn.transparency {
+  background-color: #ed8074ad;
+}

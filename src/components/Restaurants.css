@@ -1,0 +1,36 @@
+/*  #ed8074  */
+h2 {
+  text-align: center;
+  padding-top: 20px;
+  color: #ed8074;
+}
+.filter {
+  width: 90%;
+  margin: 0 auto;
+}
+.filter label {
+  color: rgb(121, 120, 120);
+}
+.filter select {
+  border-color: #ed8074;
+}
+.search {
+  width: 90%;
+  margin: 15px auto;
+  border-color: #ed8074;
+}
+.card {
+  border-color: #ed8074;
+  color: #ed8074;
+  margin: 30px auto;
+}
+.card img {
+  min-height: 180px;
+  object-fit: scale-down;
+  background-color: rgba(221, 221, 221, 0.472);
+}
+.card-text {
+  text-align: start;
+  font-size: 15px;
+  margin: 0;
+}

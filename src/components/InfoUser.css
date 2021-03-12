@@ -1,0 +1,26 @@
+.img-profile {
+  display: block;
+  width: 200px;
+  height: 200px;
+  object-fit: cover;
+  border-radius: 50%;
+  border: 3px solid #ed8074;
+  margin: 15px auto;
+}
+.btn-delete {
+  display: block;
+  margin: 0 auto;
+}
+.form-photo input {
+  display: block;
+  margin: 0 auto;
+}
+.form-photo button {
+  display: block;
+  margin: 0 auto;
+  background-color: #ed8074;
+  border: none;
+  color: white;
+  margin-top: 10px;
+  margin-bottom: 35px;
+}

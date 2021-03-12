@@ -52,7 +52,7 @@ class Maps extends Component {
         {display ? (
           <div className="map-container">
             <MapContainer
-              style={{ width: '800px', height: '400px' }}
+              style={{ maxWidth: '800px', maxWeight: '400px' }}
               // MAP POSITION
               center={this.state.position}
               zoom={15}

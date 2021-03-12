@@ -125,7 +125,7 @@ class Restaurant extends Component {
           <label htmlFor="exampleFormControlSelect1">Categories</label>
           <select onChange={this.handleFilter} className="form-control">
             <option value="all">All</option>
-            <option value="chinese">chinesse</option>
+            <option value="chinese">chinese</option>
             <option value="Indian">Indian</option>
             <option value="Burguer">Burguer</option>
             <option value="Spanish">Spanish</option>

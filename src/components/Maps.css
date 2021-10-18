@@ -7,5 +7,13 @@
   padding: 15px 0;
 }
 .map-container {
+  width: 375px;
+  height: 400px;
   margin: 0 auto;
+}
+
+@media (min-width: 768px) {
+  .map-container {
+    width: 600px;
+  }
 }

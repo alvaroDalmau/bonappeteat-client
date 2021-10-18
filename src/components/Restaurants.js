@@ -165,8 +165,8 @@ class Restaurant extends Component {
                 </div> */
               }
               return (
-                <Link key={index} to={`/restaurant/${restaurant._id}`}>
-                  <div className="card" style={{ width: '20rem' }}>
+                <div className="card" style={{ width: '20rem' }}>
+                  <Link key={index} to={`/restaurant/${restaurant._id}`}>
                     <img
                       className="card-img-top"
                       src={restaurant.images[0]}
@@ -176,8 +176,8 @@ class Restaurant extends Component {
                       <h4 className="card-title"> {restaurant.name}</h4>
                       <p className="card-text">{restaurant.category}</p>
                     </div>
-                  </div>
-                </Link>
+                  </Link>
+                </div>
               );
             })}
           </React.Fragment>
